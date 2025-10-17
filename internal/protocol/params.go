@@ -12,14 +12,14 @@ const DesiredSendBufferSize = (1 << 20) * 7 // 7 MB
 const InitialPacketSize = 1280
 
 // MaxCongestionWindowPackets is the maximum congestion window in packet.
-const MaxCongestionWindowPackets = 10000
+const MaxCongestionWindowPackets = 14000
 
 // MaxUndecryptablePackets limits the number of undecryptable packets that are queued in the connection.
 const MaxUndecryptablePackets = 32
 
 // ConnectionFlowControlMultiplier determines how much larger the connection flow control windows needs to be relative to any stream's flow control window
-// This is the value that Chromium is using
-const ConnectionFlowControlMultiplier = 1.5
+// Chromium is using 1.5
+const ConnectionFlowControlMultiplier = 2
 
 // DefaultInitialMaxStreamData is the default initial stream-level flow control window for receiving data
 const DefaultInitialMaxStreamData = (1 << 10) * 512 // 512 kb
@@ -37,10 +37,10 @@ const DefaultMaxReceiveConnectionFlowControlWindow = 15 * (1 << 20) // 15 MB
 const WindowUpdateThreshold = 0.25
 
 // DefaultMaxIncomingStreams is the maximum number of streams that a peer may open
-const DefaultMaxIncomingStreams = 100
+const DefaultMaxIncomingStreams = 500
 
 // DefaultMaxIncomingUniStreams is the maximum number of unidirectional streams that a peer may open
-const DefaultMaxIncomingUniStreams = 100
+const DefaultMaxIncomingUniStreams = 500
 
 // MaxServerUnprocessedPackets is the max number of packets stored in the server that are not yet processed.
 const MaxServerUnprocessedPackets = 1024
@@ -74,11 +74,11 @@ const MaxTrackedSentPackets = MaxOutstandingSentPackets * 5 / 4
 
 // MaxNonAckElicitingAcks is the maximum number of packets containing an ACK,
 // but no ack-eliciting frames, that we send in a row
-const MaxNonAckElicitingAcks = 19
+const MaxNonAckElicitingAcks = 400
 
 // MaxStreamFrameSorterGaps is the maximum number of gaps between received StreamFrames
 // prevents DoS attacks against the streamFrameSorter
-const MaxStreamFrameSorterGaps = 1000
+const MaxStreamFrameSorterGaps = MaxCongestionWindowPackets
 
 // MinStreamFrameBufferSize is the minimum data length of a received STREAM frame
 // that we use the buffer for. This protects against a DoS where an attacker would send us
@@ -140,7 +140,7 @@ const MaxIssuedConnectionIDs = 6
 
 // PacketsPerConnectionID is the number of packets we send using one connection ID.
 // If the peer provices us with enough new connection IDs, we switch to a new connection ID.
-const PacketsPerConnectionID = 10000
+const PacketsPerConnectionID = 100000
 
 // AckDelayExponent is the ack delay exponent used when sending ACKs.
 const AckDelayExponent = 3
@@ -150,14 +150,14 @@ const AckDelayExponent = 3
 const TimerGranularity = time.Millisecond
 
 // MaxAckDelay is the maximum time by which we delay sending ACKs.
-const MaxAckDelay = 25 * time.Millisecond
+const MaxAckDelay = 10 * time.Millisecond
 
 // MaxAckDelayInclGranularity is the max_ack_delay including the timer granularity.
 // This is the value that should be advertised to the peer.
 const MaxAckDelayInclGranularity = MaxAckDelay + TimerGranularity
 
 // KeyUpdateInterval is the maximum number of packets we send or receive before initiating a key update.
-const KeyUpdateInterval = 100 * 1000
+const KeyUpdateInterval = 150 * 1000
 
 // Max0RTTQueueingDuration is the maximum time that we store 0-RTT packets in order to wait for the corresponding Initial to be received.
 const Max0RTTQueueingDuration = 100 * time.Millisecond

@@ -988,22 +988,24 @@ func (h *sentPacketHandler) SendMode(now monotime.Time) SendMode {
 	if h.numProbesToSend > 0 {
 		return h.ptoMode
 	}
+
 	// Only send ACKs if we're congestion limited.
-	if !h.congestion.CanSend(h.bytesInFlight) {
-		if h.logger.Debug() {
-			h.logger.Debugf("Congestion limited: bytes in flight %d, window %d", h.bytesInFlight, h.congestion.GetCongestionWindow())
-		}
-		return SendAck
-	}
+	// This is far too restrictive for WANs
+	// if !h.congestion.CanSend(h.bytesInFlight) {
+	// 	if h.logger.Debug() {
+	// 		h.logger.Debugf("Congestion limited: bytes in flight %d, window %d", h.bytesInFlight, h.congestion.GetCongestionWindow())
+	// 	}
+	// 	return SendAck
+	// }
 	if numTrackedPackets >= protocol.MaxOutstandingSentPackets {
 		if h.logger.Debug() {
 			h.logger.Debugf("Max outstanding limited: tracking %d packets, maximum: %d", numTrackedPackets, protocol.MaxOutstandingSentPackets)
 		}
 		return SendAck
 	}
-	if !h.congestion.HasPacingBudget(now) {
-		return SendPacingLimited
-	}
+	// if !h.congestion.HasPacingBudget(now) {
+	// 	return SendPacingLimited
+	// }
 	return SendAny
 }
 

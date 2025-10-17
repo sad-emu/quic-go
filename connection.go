@@ -2089,6 +2089,7 @@ func (c *Conn) handleAckFrame(frame *wire.AckFrame, encLevel protocol.Encryption
 		if mtu := c.mtuDiscoverer.CurrentSize(); mtu > protocol.ByteCount(c.currentMTUEstimate.Load()) {
 			c.currentMTUEstimate.Store(uint32(mtu))
 			c.sentPacketHandler.SetMaxDatagramSize(mtu)
+			fmt.Println("QUIC-GO-DEBUG: MTU Updated to", uint32(mtu))
 		}
 	}
 	return c.cryptoStreamHandler.SetLargest1RTTAcked(frame.LargestAcked())
