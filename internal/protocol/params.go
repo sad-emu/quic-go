@@ -3,19 +3,19 @@ package protocol
 import "time"
 
 // DesiredReceiveBufferSize is the kernel UDP receive buffer size that we'd like to use.
-const DesiredReceiveBufferSize = (1 << 20) * 7 // 7 MB
+const DesiredReceiveBufferSize = (1 << 20) * 300 // 300 MB
 
 // DesiredSendBufferSize is the kernel UDP send buffer size that we'd like to use.
-const DesiredSendBufferSize = (1 << 20) * 7 // 7 MB
+const DesiredSendBufferSize = (1 << 20) * 200 // 200 MB
 
 // InitialPacketSize is the initial (before Path MTU discovery) maximum packet size used.
 const InitialPacketSize = 1280
 
 // MaxCongestionWindowPackets is the maximum congestion window in packet.
-const MaxCongestionWindowPackets = 14000
+const MaxCongestionWindowPackets = 12000
 
 // MaxUndecryptablePackets limits the number of undecryptable packets that are queued in the connection.
-const MaxUndecryptablePackets = 32
+const MaxUndecryptablePackets = 64
 
 // ConnectionFlowControlMultiplier determines how much larger the connection flow control windows needs to be relative to any stream's flow control window
 // Chromium is using 1.5
@@ -28,10 +28,10 @@ const DefaultInitialMaxStreamData = (1 << 10) * 512 // 512 kb
 const DefaultInitialMaxData = ConnectionFlowControlMultiplier * DefaultInitialMaxStreamData
 
 // DefaultMaxReceiveStreamFlowControlWindow is the default maximum stream-level flow control window for receiving data
-const DefaultMaxReceiveStreamFlowControlWindow = 6 * (1 << 20) // 6 MB
+const DefaultMaxReceiveStreamFlowControlWindow = 128 * (1 << 20) // 128 MB
 
 // DefaultMaxReceiveConnectionFlowControlWindow is the default connection-level flow control window for receiving data
-const DefaultMaxReceiveConnectionFlowControlWindow = 15 * (1 << 20) // 15 MB
+const DefaultMaxReceiveConnectionFlowControlWindow = 64 * (1 << 20) // 64 MB
 
 // WindowUpdateThreshold is the fraction of the receive window that has to be consumed before an higher offset is advertised to the client
 const WindowUpdateThreshold = 0.25
