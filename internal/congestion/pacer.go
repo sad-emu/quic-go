@@ -1,6 +1,7 @@
 package congestion
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -8,7 +9,7 @@ import (
 	"github.com/quic-go/quic-go/internal/protocol"
 )
 
-const maxBurstSizePackets = 10
+const maxBurstSizePackets = 50
 
 // The pacer implements a token bucket pacing algorithm.
 type pacer struct {
@@ -28,7 +29,8 @@ func newPacer(getBandwidth func() Bandwidth) *pacer {
 			// RTT variations then won't result in under-utilization of the congestion window.
 			// Ultimately, this will result in sending packets as acknowledgments are received rather than when timers fire,
 			// provided the congestion window is fully utilized and acknowledgments arrive at regular intervals.
-			return bw * 5 / 4
+			//fmt.Println("QUIC-GO-DEBUG: Pacer adjusted bandwidth:", bw*5/2, "bytes/s")
+			return bw * 5 / 2
 		},
 	}
 	p.budgetAtLastSent = p.maxBurstSize()
@@ -102,6 +104,7 @@ func (p *pacer) TimeUntilSend() monotime.Time {
 	if diff%bw > 0 {
 		d++
 	}
+	fmt.Println("QUIC-GO-DEBUG: Pacer time until send: ", p.lastSentTime.Add(max(protocol.MinPacingDelay, time.Duration(d)*time.Nanosecond)))
 	return p.lastSentTime.Add(max(protocol.MinPacingDelay, time.Duration(d)*time.Nanosecond))
 }
 
