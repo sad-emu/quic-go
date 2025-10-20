@@ -8,7 +8,7 @@ import (
 	"github.com/quic-go/quic-go/internal/protocol"
 )
 
-const maxBurstSizePackets = 10
+const maxBurstSizePackets = 50
 
 // The pacer implements a token bucket pacing algorithm.
 type pacer struct {

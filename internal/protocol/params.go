@@ -3,16 +3,16 @@ package protocol
 import "time"
 
 // DesiredReceiveBufferSize is the kernel UDP receive buffer size that we'd like to use.
-const DesiredReceiveBufferSize = (1 << 20) * 300 // 300 MB
+const DesiredReceiveBufferSize = (1 << 20) * 175 // 175 MB
 
 // DesiredSendBufferSize is the kernel UDP send buffer size that we'd like to use.
-const DesiredSendBufferSize = (1 << 20) * 200 // 200 MB
+const DesiredSendBufferSize = (1 << 20) * 150 // 150 MB
 
 // InitialPacketSize is the initial (before Path MTU discovery) maximum packet size used.
 const InitialPacketSize = 1280
 
 // MaxCongestionWindowPackets is the maximum congestion window in packet.
-const MaxCongestionWindowPackets = 12000
+const MaxCongestionWindowPackets = 10000
 
 // MaxUndecryptablePackets limits the number of undecryptable packets that are queued in the connection.
 const MaxUndecryptablePackets = 64
@@ -150,17 +150,17 @@ const AckDelayExponent = 3
 const TimerGranularity = time.Millisecond
 
 // MaxAckDelay is the maximum time by which we delay sending ACKs.
-const MaxAckDelay = 10 * time.Millisecond
+const MaxAckDelay = 25 * time.Millisecond
 
 // MaxAckDelayInclGranularity is the max_ack_delay including the timer granularity.
 // This is the value that should be advertised to the peer.
 const MaxAckDelayInclGranularity = MaxAckDelay + TimerGranularity
 
 // KeyUpdateInterval is the maximum number of packets we send or receive before initiating a key update.
-const KeyUpdateInterval = 150 * 1000
+const KeyUpdateInterval = 150 * 5000
 
 // Max0RTTQueueingDuration is the maximum time that we store 0-RTT packets in order to wait for the corresponding Initial to be received.
-const Max0RTTQueueingDuration = 100 * time.Millisecond
+const Max0RTTQueueingDuration = 200 * time.Millisecond
 
 // Max0RTTQueues is the maximum number of connections that we buffer 0-RTT packets for.
 const Max0RTTQueues = 32
